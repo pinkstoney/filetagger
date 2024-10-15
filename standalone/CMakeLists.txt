@@ -18,6 +18,13 @@ CPMAddPackage(
 
 CPMAddPackage(NAME FileTagger SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 
+# ---- Add dependencies ----
+CPMAddPackage(
+  NAME doctest
+  GITHUB_REPOSITORY onqtam/doctest
+  VERSION 2.4.9
+)
+
 # ---- Specify Source Files Explicitly ----
 
 set(STANDALONE_SOURCES
@@ -29,4 +36,4 @@ add_executable(${PROJECT_NAME} ${STANDALONE_SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17 OUTPUT_NAME "FileTagger")
 
 # ---- Link dependencies ----
-target_link_libraries(${PROJECT_NAME} PRIVATE FileTagger::FileTagger cxxopts)
+target_link_libraries(${PROJECT_NAME} PRIVATE FileTagger::FileTagger cxxopts doctest::doctest)

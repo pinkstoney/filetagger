@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <iostream>
+#include <stdexcept>
 
 namespace filetagger
 {
@@ -9,7 +10,7 @@ namespace filetagger
 FileTagger::FileTagger(const std::filesystem::path& directoryPath)
     : m_directoryPath(directoryPath)
     , m_scanner(directoryPath)
-    , m_dbManager("database.db")
+    , m_dbManager(directoryPath / "database.db")  // Ensure database path is correct
 {
 }
 

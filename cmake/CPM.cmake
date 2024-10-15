@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 #
-# SPDX-FileCopyrightText: Copyright (c) 2019-2023 Lars Melchior and contributors
+# SPDX-FileCopyrightText: Copyright (c) 2016-2023 
 
 set(CPM_DOWNLOAD_VERSION 0.39.0)
 set(CPM_HASH_SUM "66639bcac9dd2907b2918de466783554c1334446b9874e90d38e3778d404c2ef")
@@ -22,3 +22,13 @@ file(DOWNLOAD
 )
 
 include(${CPM_DOWNLOAD_LOCATION})
+
+# **Remove Manual FetchContent Calls**
+# These manual calls interfere with CPM's handling of dependencies and should be removed.
+# 
+# // ... existing code ...
+# FetchContent_MakeAvailable(doctest)
+# FetchContent_MakeAvailable(another_dependency)
+# // ... existing code ...
+
+# ... rest of the existing code ...
