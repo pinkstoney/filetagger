@@ -1,4 +1,4 @@
-#include <FileTagger/FileTagger.h>
+#include <file-tagger/file-tagger.h>
 
 #include <doctest/doctest.h>
 #include <filetagger/version.h>

@@ -37,6 +37,9 @@ CPMAddPackage(
 
 # ---- Find SQLite3 ----
 find_package(SQLite3 REQUIRED)
+if(NOT SQLite3_FOUND)
+  message(FATAL_ERROR "SQLite3 not found. Please install SQLite3 development libraries.")
+endif()
 
 # ---- Add source and header files explicitly ----
 
@@ -63,7 +66,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
 
 # ---- Link dependencies ----
-target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt ${SQLite3_LIBRARIES}) 
+target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt ${SQLite3_LIBRARIES})
 
 # ---- Specify include directories ----
 target_include_directories(
