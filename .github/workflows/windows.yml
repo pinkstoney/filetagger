@@ -26,18 +26,37 @@ jobs:
           path: "**/cpm_modules"
           key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
 
-      - name: Install dependencies
+      - name: Install vcpkg
+        shell: pwsh
         run: |
-          vcpkg install sqlite3:x64-windows
-          echo "CMAKE_TOOLCHAIN_FILE=$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" >> $GITHUB_ENV
+          git clone https://github.com/microsoft/vcpkg.git
+          .\vcpkg\bootstrap-vcpkg.bat
+          echo "VCPKG_INSTALLATION_ROOT=${{ github.workspace }}/vcpkg" >> $env:GITHUB_ENV
 
-      - name: configure
-        run: cmake -Stest -Bbuild -DCMAKE_TOOLCHAIN_FILE=$env:CMAKE_TOOLCHAIN_FILE
+      - name: Install dependencies with vcpkg
+        shell: pwsh
+        run: |
+          .\vcpkg\vcpkg.exe install sqlite3:x64-windows
 
-      - name: build
-        run: cmake --build build --config Debug -j4
+      - name: Set CMAKE_TOOLCHAIN_FILE
+        shell: pwsh
+        run: |
+          $toolchain = "${{ env.VCPKG_INSTALLATION_ROOT }}/scripts/buildsystems/vcpkg.cmake"
+          $toolchain = $toolchain -replace '\\', '/'
+          echo "CMAKE_TOOLCHAIN_FILE=${toolchain}" >> $env:GITHUB_ENV
 
-      - name: test
+      - name: Configure with CMake
+        shell: pwsh
+        run: |
+          cmake -Stest -Bbuild -DCMAKE_TOOLCHAIN_FILE="${{ env.CMAKE_TOOLCHAIN_FILE }}" -DCMAKE_BUILD_TYPE=Debug
+
+      - name: Build with CMake
+        shell: pwsh
+        run: |
+          cmake --build build --config Debug -- /m
+
+      - name: Run Tests
+        shell: pwsh
         run: |
           cd build
           ctest --build-config Debug

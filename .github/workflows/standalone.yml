@@ -25,11 +25,16 @@ jobs:
           path: "**/cpm_modules"
           key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
 
-      - name: configure
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsqlite3-dev
+
+      - name: Configure
         run: cmake -Sstandalone -Bbuild -DCMAKE_BUILD_TYPE=Debug
 
-      - name: build
+      - name: Build
         run: cmake --build build -j4
 
-      - name: run
-        run: ./build/Greeter
+      - name: Run
+        run: ./build/FileTagger

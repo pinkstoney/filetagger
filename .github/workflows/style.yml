@@ -26,10 +26,14 @@ jobs:
           key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
 
       - name: Install format dependencies
-        run: pip3 install clang-format==14.0.6 cmake_format==0.6.11 pyyaml
+        run: |
+          pip3 install --user clang-format==14.0.6 cmake_format==0.6.11 pyyaml
 
-      - name: configure
+      - name: Add user-local bin to PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Configure
         run: cmake -Stest -Bbuild
 
-      - name: check style
+      - name: Check style
         run: cmake --build build --target check-format

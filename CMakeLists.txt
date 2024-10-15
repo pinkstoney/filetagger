@@ -60,7 +60,7 @@ set(SOURCES
 add_library(${PROJECT_NAME} ${HEADERS} ${SOURCES})
 
 # Specify C++17 standard
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 20)
 
 # Enforce standards conformance on MSVC
 target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
