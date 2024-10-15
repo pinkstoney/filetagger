@@ -1,3 +1,5 @@
+# .github/workflows/standalone.yml
+
 name: Standalone
 
 on:
@@ -36,5 +38,8 @@ jobs:
       - name: Build
         run: cmake --build build -j4
 
+      - name: Create Tagging Directory
+        run: mkdir -p tagging_target
+
       - name: Run
-        run: ./build/FileTagger
+        run: ./build/FileTagger --path tagging_target
